@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Blood Bank Connect</title>
+  <!-- Bootstrap 5 -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    :root { --bb-red: #e11d48; --bb-dark: #0f172a; }
+    body { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji"; background: #f8fafc; }
+    .navbar { box-shadow: 0 8px 24px rgba(2, 6, 23, .06); }
+    .hero { background: radial-gradient(80% 80% at 50% 0%, #fee2e2 0%, #fff 60%); }
+    .card { border: 0; box-shadow: 0 8px 24px rgba(2, 6, 23, .06); border-radius: 1rem; }
+    .bb-badge { background: var(--bb-red); }
+    .bb-btn { background: var(--bb-red); border: none; }
+    .bb-btn:hover { filter: brightness(.95); }
+    .link-like { cursor: pointer; color: var(--bb-red); }
+    .hidden { display: none !important; }
+    .table thead th { background: #fff1f2; }
+    .required::after { content:" *"; color: var(--bb-red); }
+  </style>
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar navbar-expand-lg bg-white sticky-top">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="#">🩸 Blood Bank Connect</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav" aria-controls="nav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="nav">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center gap-lg-3">
+          <li class="nav-item"><a class="nav-link" data-nav="home">Home</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="donors">Find Donors</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="requests">Requests</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="register">Register</a></li>
+          <li class="nav-item"><a class="nav-link" data-nav="login">Login</a></li>
+          <li class="nav-item dropdown hidden" id="profileMenu">
+            <a class="nav-link dropdown-toggle fw-semibold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Account</a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><h6 class="dropdown-header" id="welcomeName">Welcome</h6></li>
+              <li><a class="dropdown-item" data-nav="dashboard">Dashboard</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" id="logoutBtn">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <main class="container py-5">
+    <!-- HOME / HERO -->
+    <section id="view-home" class="hero py-5">
+      <div class="row align-items-center g-4">
+        <div class="col-lg-6">
+          <span class="badge bb-badge mb-3">Community Blood Support</span>
+          <h1 class="display-5 fw-extrabold">Find a donor. Save a life.</h1>
+          <p class="lead text-secondary">A simple portal for donors and recipients to connect quickly by blood group and location.</p>
+          <div class="d-flex gap-3">
+            <a class="btn bb-btn btn-lg text-white" data-nav="register">Become a Donor</a>
+            <a class="btn btn-outline-dark btn-lg" data-nav="donors">Find Donors</a>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4">
+            <h5 class="mb-3">Quick Search</h5>
+            <form id="quickSearchForm" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label required">Blood Group</label>
+                <select class="form-select" name="blood_group" required>
+                  <option value="">Select…</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>AB+</option><option>AB-</option>
+                  <option>O+</option><option>O-</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">City / Area</label>
+                <input class="form-control" name="location" placeholder="e.g., Chennai" />
+              </div>
+              <div class="col-12 d-grid d-sm-flex gap-3">
+                <button class="btn bb-btn text-white" type="submit">Search</button>
+                <a class="btn btn-outline-secondary" data-nav="register">Register as Donor</a>
+              </div>
+            </form>
+            <div id="quickResults" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- REGISTER -->
+    <section id="view-register" class="hidden">
+      <div class="row justify-content-center">
+        <div class="col-lg-8">
+          <div class="card p-4">
+            <h3 class="mb-1">Donor Registration</h3>
+            <p class="text-secondary mb-4">Create your donor profile so recipients can reach you.</p>
+            <form id="registerForm" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label required">Full Name</label>
+                <input class="form-control" name="name" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required">Email</label>
+                <input type="email" class="form-control" name="email" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required">Phone</label>
+                <input class="form-control" name="phone" pattern="[0-9]{10}" placeholder="10-digit number" required />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label required">Blood Group</label>
+                <select class="form-select" name="blood_group" required>
+                  <option value="">Select…</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>AB+</option><option>AB-</option>
+                  <option>O+</option><option>O-</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label required">City</label>
+                <input class="form-control" name="location" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required">Password</label>
+                <input type="password" class="form-control" name="password" minlength="6" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Availability Notes</label>
+                <input class="form-control" name="notes" placeholder="e.g., Available weekends only" />
+              </div>
+              <div class="col-12 d-grid d-sm-flex gap-3">
+                <button class="btn bb-btn text-white" type="submit">Create Account</button>
+                <a class="btn btn-outline-secondary" data-nav="login">I already have an account</a>
+              </div>
+            </form>
+            <div id="registerMsg" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LOGIN -->
+    <section id="view-login" class="hidden">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="card p-4">
+            <h3 class="mb-1">Login</h3>
+            <p class="text-secondary mb-4">Access your dashboard to post and manage requests.</p>
+            <form id="loginForm" class="row g-3">
+              <div class="col-12">
+                <label class="form-label required">Email</label>
+                <input type="email" class="form-control" name="email" required />
+              </div>
+              <div class="col-12">
+                <label class="form-label required">Password</label>
+                <input type="password" class="form-control" name="password" required />
+              </div>
+              <div class="col-12 d-grid d-sm-flex gap-3">
+                <button class="btn bb-btn text-white" type="submit">Login</button>
+                <a class="btn btn-outline-secondary" data-nav="register">Create an account</a>
+              </div>
+            </form>
+            <div id="loginMsg" class="mt-3"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FIND DONORS -->
+    <section id="view-donors" class="hidden">
+      <div class="card p-4">
+        <div class="d-flex flex-wrap align-items-end gap-3 mb-3">
+          <div>
+            <h3 class="mb-1">Find Donors</h3>
+            <p class="text-secondary mb-0">Search by blood group and city.</p>
+          </div>
+        </div>
+        <form id="donorSearchForm" class="row g-3 mb-3">
+          <div class="col-md-3">
+            <label class="form-label">Blood Group</label>
+            <select class="form-select" name="blood_group">
+              <option value="">Any</option>
+              <option>A+</option><option>A-</option>
+              <option>B+</option><option>B-</option>
+              <option>AB+</option><option>AB-</option>
+              <option>O+</option><option>O-</option>
+            </select>
+          </div>
+          <div class="col-md-3">
+            <label class="form-label">City</label>
+            <input class="form-control" name="location" placeholder="e.g., Coimbatore" />
+          </div>
+          <div class="col-md-3 align-self-end d-grid d-sm-block">
+            <button class="btn bb-btn text-white" type="submit">Search</button>
+          </div>
+        </form>
+        <div class="table-responsive">
+          <table class="table align-middle" id="donorTable">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Blood Group</th>
+                <th>City</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- REQUESTS -->
+    <section id="view-requests" class="hidden">
+      <div class="row g-4">
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <h3 class="mb-1">Post a Blood Request</h3>
+            <p class="text-secondary">You must be logged in to post.</p>
+            <form id="requestForm" class="row g-3">
+              <div class="col-md-6">
+                <label class="form-label required">Patient Name</label>
+                <input class="form-control" name="patient_name" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required">Hospital</label>
+                <input class="form-control" name="hospital" required />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label required">City</label>
+                <input class="form-control" name="location" required />
+              </div>
+              <div class="col-md-3">
+                <label class="form-label required">Blood Group</label>
+                <select class="form-select" name="blood_group" required>
+                  <option value="">Select…</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>AB+</option><option>AB-</option>
+                  <option>O+</option><option>O-</option>
+                </select>
+              </div>
+              <div class="col-md-3">
+                <label class="form-label required">Date Needed</label>
+                <input type="date" class="form-control" name="date_needed" required />
+              </div>
+              <div class="col-12">
+                <label class="form-label">Urgency</label>
+                <select class="form-select" name="urgency">
+                  <option>Normal</option>
+                  <option>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+              <div class="col-12 d-grid d-sm-flex gap-3">
+                <button class="btn bb-btn text-white" type="submit">Post Request</button>
+                <span class="align-self-center small text-secondary">Posting as <span id="postingAs">Guest</span></span>
+              </div>
+            </form>
+            <div id="requestMsg" class="mt-3"></div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <div>
+                <h3 class="mb-1">Active Requests</h3>
+                <p class="text-secondary mb-0">Contact the requester directly.</p>
+              </div>
+              <div class="input-group" style="max-width: 260px;">
+                <span class="input-group-text">Filter</span>
+                <select class="form-select" id="filterByGroup">
+                  <option value="">All</option>
+                  <option>A+</option><option>A-</option>
+                  <option>B+</option><option>B-</option>
+                  <option>AB+</option><option>AB-</option>
+                  <option>O+</option><option>O-</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-middle" id="requestTable">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Blood Group</th>
+                    <th>City</th>
+                    <th>Hospital</th>
+                    <th>Date</th>
+                    <th>Urgency</th>
+                    <th>Contact</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- DASHBOARD -->
+    <section id="view-dashboard" class="hidden">
+      <div class="row g-4">
+        <div class="col-lg-4">
+          <div class="card p-4 h-100">
+            <h4 class="mb-3">Your Profile</h4>
+            <dl class="row mb-0" id="profileDetails"></dl>
+          </div>
+        </div>
+        <div class="col-lg-8">
+          <div class="card p-4 h-100">
+            <div class="d-flex justify-content-between align-items-center mb-2">
+              <h4 class="mb-0">Your Requests</h4>
+              <small class="text-secondary">Click a row to remove</small>
+            </div>
+            <div class="table-responsive">
+              <table class="table align-middle" id="myRequestTable">
+                <thead>
+                  <tr>
+                    <th>Patient</th>
+                    <th>Blood Group</th>
+                    <th>City</th>
+                    <th>Hospital</th>
+                    <th>Date</th>
+                    <th>Urgency</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container py-4 small text-center text-secondary">
+    Built for demo only — data stored in your browser (localStorage). Replace with real backend for production.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    
+    const LS_KEYS = { users: 'bb_users', requests: 'bb_requests', current: 'bb_currentUser' };
+    const getUsers = () => JSON.parse(localStorage.getItem(LS_KEYS.users) || '[]');
+    const setUsers = (arr) => localStorage.setItem(LS_KEYS.users, JSON.stringify(arr));
+    const getRequests = () => JSON.parse(localStorage.getItem(LS_KEYS.requests) || '[]');
+    const setRequests = (arr) => localStorage.setItem(LS_KEYS.requests, JSON.stringify(arr));
+    const getCurrent = () => JSON.parse(localStorage.getItem(LS_KEYS.current) || 'null');
+    const setCurrent = (obj) => localStorage.setItem(LS_KEYS.current, JSON.stringify(obj));
+
+    // Seed some demo data if empty
+    (function seed(){
+      if (!getUsers().length) {
+        setUsers([
+          { id: crypto.randomUUID(), name: 'Anita Kumar', email: 'anita@example.com', phone: '9876543210', blood_group: 'O+', location: 'Chennai', notes: 'Weekends only', password: 'demo123' },
+          { id: crypto.randomUUID(), name: 'Rahul Singh', email: 'rahul@example.com', phone: '9123456780', blood_group: 'A-', location: 'Bengaluru', notes: '', password: 'demo123' },
+          { id: crypto.randomUUID(), name: 'Meera Nair', email: 'meera@example.com', phone: '9988776655', blood_group: 'B+', location: 'Kochi', notes: 'Near MG Rd', password: 'demo123' }
+        ]);
+      }
+      if (!getRequests().length) {
+        setRequests([
+          { id: crypto.randomUUID(), user_id: null, patient_name:'K. Prakash', hospital:'Apollo', location:'Chennai', blood_group:'O+', date_needed: new Date().toISOString().slice(0,10), urgency:'High', contact:{ name:'Ward Desk', phone:'044-123456' } }
+        ]);
+      }
+    })();
+
+    /*************************
+     * Basic router (show/hide sections)
+     *************************/
+    const views = ['home','register','login','donors','requests','dashboard'];
+    function show(view){
+      views.forEach(v=>document.getElementById('view-'+v).classList.add('hidden'));
+      document.getElementById('view-'+view).classList.remove('hidden');
+      // update active nav
+      document.querySelectorAll('[data-nav]').forEach(a=>a.classList.remove('active'));
+      document.querySelectorAll('[data-nav="'+view+'"]').forEach(a=>a.classList.add('active'));
+      if(view==='donors') renderDonorTable(getUsers());
+      if(view==='requests') { renderRequestTable(); updatePostingAs(); }
+      if(view==='dashboard') { renderProfile(); renderMyRequests(); }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    document.querySelectorAll('[data-nav]').forEach(el=>{
+      el.addEventListener('click', (e)=>{ e.preventDefault(); const v = el.getAttribute('data-nav'); show(v); });
+    });
+
+    /*************************
+     * Auth UI state
+     *************************/
+    function setAuthUI(){
+      const me = getCurrent();
+      const profileMenu = document.getElementById('profileMenu');
+      const navLogin = document.querySelector('[data-nav="login"]').closest('li');
+      const navRegister = document.querySelector('[data-nav="register"]').closest('li');
+      if(me){
+        profileMenu.classList.remove('hidden');
+        document.getElementById('welcomeName').textContent = me.name;
+        navLogin.classList.add('hidden');
+        navRegister.classList.add('hidden');
+      } else {
+        profileMenu.classList.add('hidden');
+        navLogin.classList.remove('hidden');
+        navRegister.classList.remove('hidden');
+      }
+    }
+    setAuthUI();
+
+    document.getElementById('logoutBtn').addEventListener('click', ()=>{
+      localStorage.removeItem(LS_KEYS.current);
+      setAuthUI();
+      show('home');
+    });
+
+    /*************************
+     * Quick Search (home)
+     *************************/
+    document.getElementById('quickSearchForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const group = fd.get('blood_group');
+      const city = (fd.get('location')||'').trim().toLowerCase();
+      const results = getUsers().filter(u=> u.blood_group===group && (!city || u.location.toLowerCase().includes(city)) );
+      const box = document.getElementById('quickResults');
+      if(!results.length){ box.innerHTML = `<div class="alert alert-warning">No donors found. Try a different city or register now.</div>`; return; }
+      const rows = results.map(u=>`
+        <tr>
+          <td class="fw-semibold">${u.name}</td>
+          <td>${u.blood_group}</td>
+          <td>${u.location}</td>
+          <td><a href="tel:${u.phone}">${u.phone}</a></td>
+          <td><a href="mailto:${u.email}">${u.email}</a></td>
+          <td>${u.notes||''}</td>
+        </tr>`).join('');
+      box.innerHTML = `
+        <div class="table-responsive">
+          <table class="table align-middle">
+            <thead><tr><th>Name</th><th>Blood Group</th><th>City</th><th>Phone</th><th>Email</th><th>Notes</th></tr></thead>
+            <tbody>${rows}</tbody>
+          </table>
+        </div>`;
+    });
+
+    /*************************
+     * Register
+     *************************/
+    document.getElementById('registerForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const email = fd.get('email').trim().toLowerCase();
+      const users = getUsers();
+      if(users.some(u=>u.email.toLowerCase()===email)){
+        document.getElementById('registerMsg').innerHTML = `<div class="alert alert-danger">Email already registered. Try logging in.</div>`;
+        return;
+      }
+      const user = {
+        id: crypto.randomUUID(),
+        name: fd.get('name').trim(),
+        email,
+        phone: fd.get('phone').trim(),
+        blood_group: fd.get('blood_group'),
+        location: fd.get('location').trim(),
+        notes: fd.get('notes').trim(),
+        password: fd.get('password')
+      };
+      users.push(user); setUsers(users); setCurrent({ id:user.id, name:user.name, email:user.email });
+      document.getElementById('registerMsg').innerHTML = `<div class="alert alert-success">Account created! You are now logged in.</div>`;
+      e.target.reset();
+      setAuthUI();
+      setTimeout(()=>show('dashboard'), 600);
+    });
+
+    /*************************
+     * Login
+     *************************/
+    document.getElementById('loginForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const email = fd.get('email').trim().toLowerCase();
+      const pass = fd.get('password');
+      const user = getUsers().find(u=>u.email.toLowerCase()===email && u.password===pass);
+      const msg = document.getElementById('loginMsg');
+      if(!user){ msg.innerHTML = `<div class="alert alert-danger">Invalid email or password.</div>`; return; }
+      setCurrent({ id:user.id, name:user.name, email:user.email });
+      msg.innerHTML = `<div class="alert alert-success">Welcome back, ${user.name}!</div>`;
+      e.target.reset();
+      setAuthUI();
+      setTimeout(()=>show('dashboard'), 500);
+    });
+
+    /*************************
+     * Donor search table
+     *************************/
+    function renderDonorTable(list){
+      const tbody = document.querySelector('#donorTable tbody');
+      tbody.innerHTML = list.map(u=> `
+        <tr>
+          <td class="fw-semibold">${u.name}</td>
+          <td>${u.blood_group}</td>
+          <td>${u.location}</td>
+          <td><a href="tel:${u.phone}">${u.phone}</a></td>
+          <td><a href="mailto:${u.email}">${u.email}</a></td>
+          <td>${u.notes||''}</td>
+        </tr>`).join('');
+    }
+
+    document.getElementById('donorSearchForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const group = fd.get('blood_group');
+      const city = (fd.get('location')||'').trim().toLowerCase();
+      const users = getUsers().filter(u=> (!group || u.blood_group===group) && (!city || u.location.toLowerCase().includes(city)) );
+      renderDonorTable(users);
+    });
+
+    /*************************
+     * Requests list + create
+     *************************/
+    function updatePostingAs(){
+      const me = getCurrent();
+      document.getElementById('postingAs').textContent = me ? me.name : 'Guest';
+    }
+
+    document.getElementById('requestForm').addEventListener('submit', (e)=>{
+      e.preventDefault();
+      const me = getCurrent();
+      if(!me){
+        document.getElementById('requestMsg').innerHTML = `<div class="alert alert-warning">Please login to post a request.</div>`;
+        return;
+      }
+      const fd = new FormData(e.target);
+      const req = {
+        id: crypto.randomUUID(),
+        user_id: me.id,
+        patient_name: fd.get('patient_name').trim(),
+        hospital: fd.get('hospital').trim(),
+        location: fd.get('location').trim(),
+        blood_group: fd.get('blood_group'),
+        date_needed: fd.get('date_needed'),
+        urgency: fd.get('urgency')||'Normal',
+        contact: { name: me.name, phone: getUsers().find(u=>u.id===me.id)?.phone || '', email: me.email }
+      };
+      const list = getRequests(); list.unshift(req); setRequests(list);
+      e.target.reset();
+      document.getElementById('requestMsg').innerHTML = `<div class="alert alert-success">Request posted.</div>`;
+      renderRequestTable();
+      renderMyRequests();
+    });
+
+    function renderRequestTable(){
+      const groupFilter = document.getElementById('filterByGroup').value;
+      const rows = getRequests().filter(r=> !groupFilter || r.blood_group===groupFilter)
+        .map(r=> `
+          <tr>
+            <td>${r.patient_name}</td>
+            <td class="fw-semibold">${r.blood_group}</td>
+            <td>${r.location}</td>
+            <td>${r.hospital}</td>
+            <td>${r.date_needed}</td>
+            <td><span class="badge ${badgeByUrgency(r.urgency)}">${r.urgency}</span></td>
+            <td>
+              ${r.contact?.phone? `<a href="tel:${r.contact.phone}" class="me-2">${r.contact.phone}</a>`:''}
+              ${r.contact?.email? `<a href="mailto:${r.contact.email}">${r.contact.email}</a>`:''}
+            </td>
+          </tr>`).join('');
+      document.querySelector('#requestTable tbody').innerHTML = rows || `<tr><td colspan="7" class="text-center text-secondary">No requests yet.</td></tr>`;
+    }
+
+    function badgeByUrgency(u){
+      if(u==='Critical') return 'text-bg-danger';
+      if(u==='High') return 'text-bg-warning';
+      return 'text-bg-secondary';
+    }
+
+    document.getElementById('filterByGroup').addEventListener('change', renderRequestTable);
+
+    /*************************
+     * Dashboard (profile + my requests)
+     *************************/
+    function renderProfile(){
+      const me = getCurrent();
+      if(!me){ document.getElementById('profileDetails').innerHTML = '<div class="text-secondary">Login required.</div>'; return; }
+      const u = getUsers().find(x=>x.id===me.id);
+      const fields = [
+        ['Name', u.name],['Email', u.email],['Phone', u.phone],['Blood Group', u.blood_group],['City', u.location],['Notes', u.notes||'-']
+      ];
+      document.getElementById('profileDetails').innerHTML = fields.map(([k,v])=>`
+        <dt class="col-5 text-secondary">${k}</dt><dd class="col-7">${v}</dd>`).join('');
+    }
+
+    function renderMyRequests(){
+      const me = getCurrent();
+      const tbody = document.querySelector('#myRequestTable tbody');
+      if(!me){ tbody.innerHTML = '<tr><td colspan="6" class="text-secondary">Login required.</td></tr>'; return; }
+      const mine = getRequests().filter(r=> r.user_id === me.id);
+      tbody.innerHTML = mine.map(r=>`
+        <tr data-id="${r.id}">
+          <td>${r.patient_name}</td>
+          <td>${r.blood_group}</td>
+          <td>${r.location}</td>
+          <td>${r.hospital}</td>
+          <td>${r.date_needed}</td>
+          <td>${r.urgency}</td>
+        </tr>`).join('') || '<tr><td colspan="6" class="text-secondary">No requests yet.</td></tr>';
+      // remove on click
+      tbody.querySelectorAll('tr[data-id]').forEach(tr=>{
+        tr.addEventListener('click', ()=>{
+          if(confirm('Remove this request?')){
+            const id = tr.getAttribute('data-id');
+            const left = getRequests().filter(r=> r.id !== id);
+            setRequests(left); renderRequestTable(); renderMyRequests();
+          }
+        });
+      });
+    }
+
+    // Default view
+    show('home');
+  </script>
+</body>
+</html>
+

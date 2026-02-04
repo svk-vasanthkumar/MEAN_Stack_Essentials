@@ -1,0 +1,133 @@
+/* ---------- GLOBAL ---------- */
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background: linear-gradient(to right, #fdfbfb, #ebedee);
+}
+
+h1 {
+  text-align: center;
+  color: #ff6f00;
+  margin: 20px 0;
+}
+
+/* ---------- MAIN LAYOUT ---------- */
+.container {
+  max-width: 1100px;
+  margin: auto;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 40px;
+  padding: 20px;
+}
+
+/* ---------- FORM CARD ---------- */
+.form {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+}
+
+.form h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #ff6f00;
+  padding-bottom: 5px;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #ff6f00;
+}
+
+/* ---------- BUTTONS ---------- */
+button {
+  width: 100%;
+  margin-top: 10px;
+  padding: 12px;
+  border-radius: 25px;
+  border: none;
+  background: linear-gradient(to right, #ff8f00, #ff6f00);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+/* ---------- SEAT SECTION ---------- */
+.seats {
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  text-align: center;
+}
+
+.seats h3 {
+  margin-top: 0;
+  color: #333;
+  border-bottom: 2px solid #4caf50;
+  padding-bottom: 5px;
+}
+
+/* ---------- BUS SEAT GRID ---------- */
+.seat-grid {
+  margin-top: 20px;
+  display: grid;
+  grid-template-columns: repeat(4, 55px);
+  gap: 14px;
+  justify-content: center;
+}
+
+/* ---------- SEAT ---------- */
+.seat {
+  width: 55px;
+  height: 55px;
+  background: #81c784;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.seat:hover {
+  transform: scale(1.05);
+}
+
+.seat.selected {
+  background: #64b5f6;
+  color: white;
+}
+
+.seat.booked {
+  background: #e57373;
+  cursor: not-allowed;
+  color: white;
+}
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width: 768px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+
+  .form, .seats {
+    width: 100%;
+  }
+}

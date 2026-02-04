@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Data view</title>
+
+<style>
+    body{
+        justify-content: center;
+        align-items: center;
+        padding: 100px;
+
+    }
+</style>
+
+
+</head>
+<body>
+<h2>Data</h2>
+<p><strong>Name:</strong> <span id="name"></span></p>
+<p><strong>Email:</strong> <span id="email"></span></p>
+<button onclick="clearData()"></button>
+<script>
+// Retrieve from localStorage
+document.getElementById("name").innerText =
+localStorage.getItem("username");
+document.getElementById("email").innerText =
+localStorage.getItem("email");
+function clearData() {
+localStorage.clear();
+alert("Data Cleared");
+window.location.href = "index.html";
+}
+</script>
+</body>
+</html>

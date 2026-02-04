@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Addition of  Numbers</title>
+    <script>
+        function addNumber(){
+            var val1 = parseInt(document.getElementById("value1").value);
+            var val2 = parseInt(document.getElementById("value2").value);
+            var ans1 = document.getElementById("solution");
+            ans1.value=val1+val2;
+
+        }
+        function subNumber(){
+            var val1 = parseInt(document.getElementById("value1").value);
+            var val2 = parseInt(document.getElementById("value2").value);
+            var ans1 = document.getElementById("solution");
+            ans1.value= val1-val2;
+        }
+         function mulNumber(){
+            var val1 = parseInt(document.getElementById("value1").value);
+            var val2 = parseInt(document.getElementById("value2").value);
+            var ans1 = document.getElementById("solution");
+            ans1.value= val1*val2;
+        }
+         function divNumber(){
+            var val1 = parseInt(document.getElementById("value1").value);
+            var val2 = parseInt(document.getElementById("value2").value);
+            var ans1 = document.getElementById("solution");
+            ans1.value= val1/val2;
+        }
+         function modNumber(){
+            var val1 = parseInt(document.getElementById("value1").value);
+            var val2 = parseInt(document.getElementById("value2").value);
+            var ans1 = document.getElementById("solution");
+            ans1.value= val1%val2;
+        }
+
+       
+        
+    </script>
+    <style>
+        .maths{
+            border: 2px solid black;
+            width: 200px;
+            border-radius: 20px;
+            background-color: grey;
+            
+        }
+        .sample{
+            padding-top: 100px;
+        }
+        .maths input{
+            text-align: center;
+            border-radius: 5px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .maths input but{
+            display: flex;
+            justify-content: center;
+            
+        }
+        .but{
+            width: 30px;
+            height: 30px;
+            border: 2px solid black;
+            border-radius: 50px;
+            cursor: pointer;            
+        }
+        .ope{
+            display: flex;
+            justify-content: space-evenly;   
+        }
+        .ope :hover{
+            border: 2px solid white;
+            background-color: black;
+            color: white;
+        }
+        
+        
+    </style>
+</head>
+<body bgcolor="skyblue">
+    <div class="sample">
+    <h1 style="text-align: center;">Calculator</h1>    
+    <center>
+        <div class="maths"><br>
+        
+        <form>
+            Value 1:<br>
+            <input type="text" name="value1" id="value1" value=""><br>
+            Value 2:<br>
+            <input type="text" name="value2" id="value2" value=""><br><br>
+            <div class="ope">
+                <h2 name="answer" onclick="addNumber()" class="but">+</h2>
+                <h2 name="answer" onclick="subNumber()" class="but">-</h2>
+                <h2 name="answer" onclick="mulNumber()" class="but">x</h2>
+                <h2 name="answer" onclick="divNumber()" class="but">/</h2>
+                <h2 name="answer" onclick="modNumber()" class="but">%</h2>
+                <!-- <h2 name="answer" onclick="subNumber()" class="but">-</h2> -->
+                
+            </div>
+            
+            
+            Solution:<br>
+            <input type="text" id="solution" name="solution" value=""><br><br>
+            <input type="reset" name="reset" id="reset"><br><br>
+        </form> 
+        </div>
+    </center>
+    </div>
+</body>
+</html>
+

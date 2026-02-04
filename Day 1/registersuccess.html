@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Form Validation</title>
+<style>
+  .error { color: blue; }
+</style>
+</head>
+<body>
+
+<h2>Form Validation</h2>
+
+
+    
+    <input type="text" id="username" placeholder="Enter name">
+    
+
+    
+    <input type="email" id="email" placeholder="enter email">
+    
+  
+  
+  <button onclick="saveData()">Submit</button>
+
+
+<script>
+function saveData() {
+
+
+const name = document.getElementById("username").value;
+
+const email = document.getElementById("email").value;
+
+if (name === "" || email === "") {
+alert("Please ll all elds");
+return;
+}
+
+
+localStorage.setItem("username", name);
+localStorage.setItem("email", email);
+
+
+window.location.href = "view.html";
+}
+</script>
+
+</body>
+</html>

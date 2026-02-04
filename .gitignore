@@ -1,0 +1,23 @@
+# Node
+day 3/node_modules/
+Day 3/node_modules/
+Day 3/Bus Booking/node_modules/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Env
+.env
+.env.*
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
