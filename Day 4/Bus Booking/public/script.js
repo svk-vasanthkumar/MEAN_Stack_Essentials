@@ -31,14 +31,7 @@ for (let i = 1; i <= 20; i++) {
 }
 
 /* ---------- BOOK TICKET ---------- */
-function bookTicket() {
-  let seatNo = Number(document.getElementById("seat").value);
-
-  if (!seatNo) {
-    alert("Please select a seat");
-    return;
-  }
-
+async function bookTicket() {
   let ticket = {
     from: document.getElementById("from").value,
     to: document.getElementById("to").value,
@@ -47,18 +40,19 @@ function bookTicket() {
     age: document.getElementById("age").value,
     gender: document.getElementById("gender").value,
     phone: document.getElementById("phone").value,
-    seat: seatNo
+    seat: document.getElementById("seat").value
   };
 
-  // SAVE SEAT
-  bookedSeats.push(seatNo);
-  localStorage.setItem("bookedSeats", JSON.stringify(bookedSeats));
+  const response = await fetch("/book", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(ticket)
+  });
 
-  // SAVE TICKET DETAILS (MULTIPLE)
-  tickets.push(ticket);
-  localStorage.setItem("tickets", JSON.stringify(tickets));
-
-  alert("Ticket Booked Successfully 🎫");
+  const result = await response.json();
+  alert(result.message);
 
   location.reload();
 }

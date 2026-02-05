@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Kaipulla Bus Booking – All Tickets</title>
+  <link rel="stylesheet" href="details.css">
+</head>
+<body>
+
+<h1>🚌 Kaipulla Bus Booking</h1>
+<h3>Booked Tickets</h3>
+
+<div class="ticket-container" id="list"></div>
+
+<a href="index.html" class="back">⬅ Back to Booking</a>
+
+<script>
+  async function loadTickets() {
+    const res = await fetch("/tickets");
+    const tickets = await res.json();
+
+    let output = "";
+
+    tickets.forEach((t, i) => {
+      output += `
+        <div class="ticket">
+          <h4>🎫 Ticket ${i + 1}</h4>
+          <p><b>Route:</b> ${t.from} ➝ ${t.to}</p>
+          <p><b>Date:</b> ${t.date}</p>
+          <hr>
+          <p><b>Name:</b> ${t.name}</p>
+          <p><b>Seat:</b> ${t.seat}</p>
+
+          <button class="cancel" onclick="cancelTicket('${t._id}')"> 
+            ❌ Cancel Ticket
+          </button>
+        </div>
+      `;
+    });
+
+    document.getElementById("list").innerHTML = output;
+  }
+
+  async function cancelTicket(id) {
+    if (!confirm("Are you sure to cancel this ticket?")) return;
+
+    const res = await fetch("/tickets/" + id, {
+      method: "DELETE"
+    });
+
+    const result = await res.json();
+    alert(result.message);
+
+    loadTickets(); // refresh list
+  }
+
+  loadTickets();
+</script>
+
+</body>
+</html>

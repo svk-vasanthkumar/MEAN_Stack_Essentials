@@ -1,7 +1,16 @@
 # Node
+node_modules/
 day 3/node_modules/
 Day 3/node_modules/
-Day 3/Bus Booking/node_modules/
+Day 4/Bus Booking/node_modules/
+dist/
+build/
+coverage/
+.cache/
+.parcel-cache/
+.next/
+.nuxt/
+out/
 
 # Logs
 *.log
@@ -14,9 +23,22 @@ pnpm-debug.log*
 .env
 .env.*
 
+# Local data
+*.sqlite
+*.sqlite3
+
+# Runtime
+*.pid
+*.seed
+*.pid.lock
+
 # OS
 .DS_Store
 Thumbs.db
+
+# Windows
+Desktop.ini
+$RECYCLE.BIN/
 
 # Editor
 .vscode/
