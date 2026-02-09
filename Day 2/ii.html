@@ -4,12 +4,111 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+        <style>
+            :root {
+                --bg1: #0b1220;
+                --bg2: #0f172a;
+                --card: #0b1830cc;
+                --border: #1f2a44;
+                --text: #e5e7eb;
+                --muted: #94a3b8;
+                --accent: #22c55e; /* green */
+                --accent-2: #06b6d4; /* cyan */
+            }
+
+            * { box-sizing: border-box; }
+
+            body {
+                margin: 0;
+                min-height: 100vh;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                background: radial-gradient(1200px 600px at 20% 20%, var(--bg2), var(--bg1));
+                color: var(--text);
+                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue", Arial, sans-serif;
+                padding: 24px;
+            }
+
+            .auth-card {
+                width: 100%;
+                max-width: 560px;
+                background: var(--card);
+                backdrop-filter: saturate(1.2) blur(8px);
+                border: 1px solid var(--border);
+                border-radius: 16px;
+                box-shadow: 0 16px 36px #00000040;
+                padding: 24px;
+            }
+
+            h2 {
+                margin: 0 0 18px;
+                font-size: 22px;
+                font-weight: 700;
+                color: var(--muted);
+                text-align: center;
+            }
+
+            label {
+                display: block;
+                margin: 12px 0 6px;
+                color: var(--muted);
+                font-size: 14px;
+            }
+
+            input[type="text"], input[type="password"] {
+                width: 100%;
+                padding: 12px 14px;
+                border: 1px solid var(--border);
+                border-radius: 12px;
+                font-size: 16px;
+                color: var(--text);
+                background: #0a1327;
+            }
+
+            input:focus { outline: 2px solid #38bdf8; outline-offset: 2px; }
+
+            button {
+                margin-top: 14px;
+                width: 100%;
+                padding: 12px 16px;
+                border: none;
+                border-radius: 12px;
+                font-size: 16px;
+                font-weight: 600;
+                color: #051019;
+                cursor: pointer;
+                background-image: linear-gradient(135deg, var(--accent), var(--accent-2));
+                box-shadow: 0 8px 18px #06b6d444;
+                transition: transform 0.06s ease, filter 0.15s ease, box-shadow 0.2s ease;
+            }
+
+            button:hover { filter: brightness(1.05); box-shadow: 0 12px 22px #06b6d455; }
+            button:active { transform: translateY(1px); }
+
+            #result {
+                margin: 18px 0 0;
+                text-align: center;
+                font-size: 56px;
+                font-weight: 800;
+                letter-spacing: 2px;
+                color: var(--text);
+                text-shadow: 0 0 8px rgba(34, 197, 94, 0.25);
+            }
+        </style>
 </head>
 <body>
-    Enter your Name :<input type="text" id="input1">
-Enter your password :<input type="password" id="input2">
-<button onclick="openpage()">check</button>
-<h1 id="result" style="font-size: 100px;"></h1>
+    <div class="auth-card">
+        <h2>Login Check</h2>
+        <label for="input1">Enter your Name</label>
+        <input type="text" id="input1" placeholder="e.g. svk">
+
+        <label for="input2">Enter your password</label>
+        <input type="password" id="input2" placeholder="e.g. 7">
+
+        <button onclick="openpage()">Check</button>
+        <h1 id="result" aria-live="polite"></h1>
+    </div>
 <script src="ii.js"></script>
 </body>
 </html>

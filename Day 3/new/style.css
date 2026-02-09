@@ -1,0 +1,103 @@
+/* Modern minimal design for Day 3/new */
+:root {
+  --bg-start: #0f172a;
+  --bg-end: #1e293b;
+  --text: #e5e7eb;
+  --muted: #94a3b8;
+  --card: rgba(255, 255, 255, 0.06);
+  --border: rgba(255, 255, 255, 0.12);
+  --yt: #ff0000;
+  --ig-start: #f58529;
+  --ig-mid: #dd2a7b;
+  --ig-end: #8134af;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  color: var(--text);
+  background: linear-gradient(135deg, var(--bg-start), var(--bg-end));
+}
+
+.container {
+  min-height: 100%;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.card {
+  width: 100%;
+  max-width: 640px;
+  padding: 32px;
+  border-radius: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+  text-align: center;
+}
+
+h1 {
+  margin: 0 0 8px;
+  font-size: 2rem;
+  letter-spacing: 0.5px;
+}
+
+.subtitle {
+  margin: 0 0 24px;
+  color: var(--muted);
+}
+
+.actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 14px 18px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
+  border: 1px solid var(--border);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+  filter: brightness(1.05);
+}
+
+.btn:active {
+  transform: translateY(0);
+  filter: brightness(0.98);
+}
+
+.youtube {
+  background: radial-gradient(120% 120% at 0% 0%, #ff6a6a 0%, var(--yt) 55%, #a70000 100%);
+}
+
+.instagram {
+  background: linear-gradient(135deg, var(--ig-start), var(--ig-mid), var(--ig-end));
+}
+
+.footer {
+  margin-top: 20px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 500px) {
+  .actions { grid-template-columns: 1fr; }
+}
