@@ -6,16 +6,22 @@
     <title>Registration Form</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="style.css">
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#203a43" />
 </head>
 <body>
     <div class="container">
-        <div class="row">
-            <div class="col-mod-3">
-                
-            </div>
-            <div class="col-md-6 main">
-                <form action="/sign_up" method="POST">
-                    <h2> Registration Form</h2>
+                <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6 main">
+                                <div class="theme-switcher" aria-label="Theme selector">
+                                        <button class="theme-btn" data-theme="theme-aurora">Aurora</button>
+                                        <button class="theme-btn" data-theme="theme-sunset">Sunset</button>
+                                        <button class="theme-btn" data-theme="theme-mint">Mint</button>
+                                </div>
+                                <form action="/sign_up" method="POST">
+                                        <h2>Registration Form</h2>
+                                        <p class="subtitle">Create your account to continue</p>
                     <input type="text" class="box" id="name" name="name" placeholder="Name" required/>
                     <br>
                     <input type="text" class="box" id="age" name="age" placeholder="Age" required/>
@@ -29,12 +35,27 @@
                     <input type="text" class="box" id="password" name="password" placeholder="Password" required/>
                     <br>
                     <input type="submit" value="Submit" id="submit" />
-
-                    </form>
-                </form>
+                                </form>
             </div>
         </div>
     </div>
-    
+        <script>
+            (function() {
+                var saved = localStorage.getItem('theme') || 'theme-aurora';
+                document.body.classList.add(saved);
+                function setTheme(name) {
+                    document.body.classList.remove('theme-aurora','theme-sunset','theme-mint');
+                    document.body.classList.add(name);
+                    localStorage.setItem('theme', name);
+                }
+                document.querySelectorAll('.theme-btn').forEach(function(btn){
+                    btn.addEventListener('click', function(e){
+                        e.preventDefault();
+                        var t = btn.getAttribute('data-theme');
+                        setTheme(t);
+                    });
+                });
+            })();
+        </script>
 </body>
 </html>
